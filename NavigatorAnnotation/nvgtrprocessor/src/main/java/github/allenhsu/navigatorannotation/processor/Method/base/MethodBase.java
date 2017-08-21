@@ -1,4 +1,4 @@
-package github.allenhsu.navigatorannotation.processor.Method.base;
+package github.allenhsu.navigatorannotation.processor.method.base;
 
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeSpec;

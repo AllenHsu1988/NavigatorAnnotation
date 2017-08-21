@@ -5,7 +5,6 @@ import com.google.common.collect.ImmutableSet;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.FieldSpec;
 import com.squareup.javapoet.JavaFile;
-import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeSpec;
 
 import java.io.IOException;
@@ -28,15 +27,16 @@ import javax.lang.model.util.Elements;
 import javax.tools.Diagnostic;
 
 import github.allenhsu.navigaotrannotation.annotation.NewIntent;
-import github.allenhsu.navigatorannotation.processor.Method.MSetDebuggable;
+import github.allenhsu.navigatorannotation.processor.field.FDebuggable;
+import github.allenhsu.navigatorannotation.processor.internal.MDebugLog;
+import github.allenhsu.navigatorannotation.processor.method.MSetDebuggable;
+import github.allenhsu.navigatorannotation.processor.method.MStartActivity;
 
 /**
  * Created by Allen on 2017/8/16.
  */
 @AutoService(Processor.class)
 public class NewIntentProcessor extends AbstractProcessor {
-
-    private static final String METHOD_PREFIX = "start";
 
     private Filer filer;
     private Messager messager;
@@ -75,11 +75,22 @@ public class NewIntentProcessor extends AbstractProcessor {
 
 
             /**
-             * 2- Generate a class
+             * Generate DebugLog class
+             */
+            TypeSpec.Builder debugLogClass = TypeSpec
+                    .classBuilder(ProcessorConst.T_DEBUG_LOG)
+                    .addModifiers(Modifier.PUBLIC, Modifier.FINAL);
+
+            debugLogClass.addMethod(new MDebugLog(debugLogClass).genMethod());
+            debugLogClass.addField(new FDebuggable().gen());
+
+            /**
+             * Generate Navigator class
              */
             TypeSpec.Builder navigatorClass = TypeSpec
-                    .classBuilder("Navigator")
+                    .classBuilder(ProcessorConst.T_NAVIGATOR)
                     .addModifiers(Modifier.PUBLIC, Modifier.FINAL);
+
 
             for (Map.Entry<String, String> element : activitiesWithPackage.entrySet()) {
                 String activityName = element.getKey();
@@ -99,32 +110,18 @@ public class NewIntentProcessor extends AbstractProcessor {
              * add setDebuggable method
              */
             navigatorClass.addMethod(new MSetDebuggable(navigatorClass).genMethod());
-
-            MethodSpec intentMethod = MethodSpec
-                    .methodBuilder(METHOD_PREFIX)
-                    .addModifiers(Modifier.PUBLIC, Modifier.STATIC)
-                    .addParameter(ProcessorConst.C_CONTEXT, "context", Modifier.FINAL)
-                    .addParameter(Class.class, "activity", Modifier.FINAL)
-                    .addCode("$T.d(\"Tanno\",\"get activity intent: \" + activity);\n", ProcessorConst.C_LOG)
-                    .beginControlFlow("if(context != null)")
-                    .addStatement("$T i = new $T($L, activity)", ProcessorConst.C_INTENT, ProcessorConst.C_INTENT, "context")
-                    .beginControlFlow("if(context instanceof $T)", ProcessorConst.C_ACTIVITY)
-                    .addStatement("i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)")
-                    .endControlFlow()
-                    .beginControlFlow("try")
-                    .addStatement("context.startActivity(i)")
-                    .endControlFlow()
-                    .beginControlFlow("catch(Exception e)")
-                    .addStatement("e.printStackTrace()")
-                    .endControlFlow()
-                    .endControlFlow()
-                    .build();
-            navigatorClass.addMethod(intentMethod);
+            navigatorClass.addMethod(new MStartActivity(navigatorClass).genMethod());
 
             /**
              * 3- Write generated class to a file
              */
-            JavaFile.builder("github.allenhsu.navigatorannotation.processor", navigatorClass.build()).build().writeTo(filer);
+            JavaFile.builder(ProcessorConst.PACKAGE_NAME, navigatorClass.build())
+                    .addFileComment("This codes are generated automatically. Do not modify!")
+                    .build().writeTo(filer);
+
+            JavaFile.builder(ProcessorConst.PACKAGE_NAME, debugLogClass.build())
+                    .addFileComment("This codes are generated automatically. Do not modify!")
+                    .build().writeTo(filer);
 
 
         } catch (IOException e) {

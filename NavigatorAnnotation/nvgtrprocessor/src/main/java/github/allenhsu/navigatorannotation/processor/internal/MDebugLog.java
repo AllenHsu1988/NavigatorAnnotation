@@ -1,7 +1,5 @@
-package github.allenhsu.navigatorannotation.processor.method;
+package github.allenhsu.navigatorannotation.processor.internal;
 
-
-import com.squareup.javapoet.FieldSpec;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.ParameterSpec;
 import com.squareup.javapoet.TypeSpec;
@@ -18,17 +16,18 @@ import github.allenhsu.navigatorannotation.processor.method.base.MethodBase;
  * Created by Allen on 2017/8/18.
  */
 
-public class MSetDebuggable extends MethodBase {
+public class MDebugLog extends MethodBase {
 
-    private static final String P_DEBUGGABLE = "is_debuggable";
+    private static final String P_TAG = "tag";
+    private static final String P_MESSAGE = "msg";
 
-    public MSetDebuggable(TypeSpec.Builder c_builder){
+    public MDebugLog(TypeSpec.Builder c_builder){
         super(c_builder);
     }
 
     @Override
     protected String getMethodName() {
-        return ProcessorConst.M_SET_DEBUGGABLE;
+        return ProcessorConst.M_LOG;
     }
 
     @Override
@@ -39,10 +38,13 @@ public class MSetDebuggable extends MethodBase {
         modifiers.add(Modifier.STATIC);
 
         Set<ParameterSpec> parameterSpecs = new LinkedHashSet<>();
-        parameterSpecs.add(ParameterSpec.builder(boolean.class, P_DEBUGGABLE, Modifier.FINAL).build());
+        parameterSpecs.add(ParameterSpec.builder(String.class, P_TAG, Modifier.FINAL).build());
+        parameterSpecs.add(ParameterSpec.builder(String.class, P_MESSAGE, Modifier.FINAL).build());
 
         m_builder.addModifiers(modifiers)
                 .addParameters(parameterSpecs)
-                .addStatement("DebugLog.$L = $L", ProcessorConst.F_DEBUGGABLE, P_DEBUGGABLE);
+                .beginControlFlow("if(" + ProcessorConst.F_DEBUGGABLE +")")
+                .addStatement("$T.d($L, $L)", ProcessorConst.C_LOG, P_TAG, P_MESSAGE)
+                .endControlFlow();
     }
 }
