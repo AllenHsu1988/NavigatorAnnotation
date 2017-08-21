@@ -29,8 +29,8 @@ import javax.tools.Diagnostic;
 import github.allenhsu.navigaotrannotation.annotation.NewIntent;
 import github.allenhsu.navigatorannotation.processor.field.FDebuggable;
 import github.allenhsu.navigatorannotation.processor.internal.MDebugLog;
-import github.allenhsu.navigatorannotation.processor.meth.MSetDebuggable;
-import github.allenhsu.navigatorannotation.processor.meth.MStartActivity;
+import github.allenhsu.navigatorannotation.processor.method.MSetDebuggable;
+import github.allenhsu.navigatorannotation.processor.method.MStartActivity;
 
 /**
  * Created by Allen on 2017/8/16.

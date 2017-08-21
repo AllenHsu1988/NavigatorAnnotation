@@ -1,4 +1,4 @@
-package github.allenhsu.navigatorannotation.processor.meth;
+package github.allenhsu.navigatorannotation.processor.method;
 
 
 import com.squareup.javapoet.MethodSpec;
@@ -11,7 +11,7 @@ import java.util.Set;
 import javax.lang.model.element.Modifier;
 
 import github.allenhsu.navigatorannotation.processor.ProcessorConst;
-import github.allenhsu.navigatorannotation.processor.meth.base.MethodBase;
+import github.allenhsu.navigatorannotation.processor.method.base.MethodBase;
 
 /**
  * Created by Allen on 2017/8/18.
