@@ -1,7 +1,6 @@
-package github.allenhsu.navigatorannotation.processor.method;
+package github.allenhsu.navigatorannotation.processor.meth;
 
 
-import com.squareup.javapoet.FieldSpec;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.ParameterSpec;
 import com.squareup.javapoet.TypeSpec;
@@ -12,7 +11,7 @@ import java.util.Set;
 import javax.lang.model.element.Modifier;
 
 import github.allenhsu.navigatorannotation.processor.ProcessorConst;
-import github.allenhsu.navigatorannotation.processor.method.base.MethodBase;
+import github.allenhsu.navigatorannotation.processor.meth.base.MethodBase;
 
 /**
  * Created by Allen on 2017/8/18.
