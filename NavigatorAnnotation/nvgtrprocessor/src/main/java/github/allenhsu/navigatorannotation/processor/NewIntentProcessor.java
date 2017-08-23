@@ -46,9 +46,9 @@ public class NewIntentProcessor extends AbstractProcessor {
     @Override
     public synchronized void init(ProcessingEnvironment processingEnvironment) {
         super.init(processingEnvironment);
-        filer = processingEnvironment.getFiler();
-        messager = processingEnvironment.getMessager();
-        elements = processingEnvironment.getElementUtils();
+        filer = processingEnvironment.getFiler();//Returns the filer used to create new source, class, or auxiliary files
+        messager = processingEnvironment.getMessager();//Returns the messager used to report errors, warnings, and other notices.
+        elements = processingEnvironment.getElementUtils();//Returns an implementation of some utility methods for operating on elements
         activitiesWithPackage = new HashMap<>();
     }
 
@@ -81,7 +81,7 @@ public class NewIntentProcessor extends AbstractProcessor {
                     .classBuilder(ProcessorConst.T_DEBUG_LOG)
                     .addModifiers(Modifier.PUBLIC, Modifier.FINAL);
 
-            debugLogClass.addMethod(new MDebugLog(debugLogClass).genMethod());
+            debugLogClass.addMethod(new MDebugLog(debugLogClass).gen());
             debugLogClass.addField(new FDebuggable().gen());
 
             /**
@@ -109,8 +109,8 @@ public class NewIntentProcessor extends AbstractProcessor {
             /**
              * add setDebuggable method
              */
-            navigatorClass.addMethod(new MSetDebuggable(navigatorClass).genMethod());
-            navigatorClass.addMethod(new MStartActivity(navigatorClass).genMethod());
+            navigatorClass.addMethod(new MSetDebuggable(navigatorClass).gen());
+            navigatorClass.addMethod(new MStartActivity(navigatorClass).gen());
 
             /**
              * 3- Write generated class to a file
