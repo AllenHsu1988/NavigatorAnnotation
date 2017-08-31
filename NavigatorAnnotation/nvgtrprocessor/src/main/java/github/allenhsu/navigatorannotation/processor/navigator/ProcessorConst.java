@@ -1,4 +1,4 @@
-package github.allenhsu.navigatorannotation.processor;
+package github.allenhsu.navigatorannotation.processor.navigator;
 
 import com.squareup.javapoet.ClassName;
 
@@ -10,6 +10,7 @@ public class ProcessorConst {
     public static final String PACKAGE_NAME = "github.allenhsu.navigatorannotation.processor";
     public static final String T_NAVIGATOR = "Navigator";
     public static final String T_DEBUG_LOG = "DebugLog";
+    public static final String T_STRING_INIT = "StringInitHelper";
 
     public static final String M_LOG  = "Log";
     public static final String M_START_ACTIVITY = "startActivity";

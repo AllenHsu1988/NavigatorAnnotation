@@ -9,7 +9,7 @@ import java.util.Set;
 
 import javax.lang.model.element.Modifier;
 
-import github.allenhsu.navigatorannotation.processor.ProcessorConst;
+import github.allenhsu.navigatorannotation.processor.navigator.ProcessorConst;
 import github.allenhsu.navigatorannotation.processor.method.base.MethodBase;
 
 /**

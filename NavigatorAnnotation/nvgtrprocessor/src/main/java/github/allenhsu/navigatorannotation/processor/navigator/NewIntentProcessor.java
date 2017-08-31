@@ -1,4 +1,4 @@
-package github.allenhsu.navigatorannotation.processor;
+package github.allenhsu.navigatorannotation.processor.navigator;
 
 import com.google.auto.service.AutoService;
 import com.google.common.collect.ImmutableSet;
@@ -72,7 +72,6 @@ public class NewIntentProcessor extends AbstractProcessor {
                         element.getSimpleName().toString(),
                         elements.getPackageOf(element).getQualifiedName().toString());
             }
-
 
             /**
              * Generate DebugLog class
